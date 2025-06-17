@@ -42,3 +42,11 @@ Your project may not work correctly until you install the expected versions of t
 ```
 
 This will lead to bugs, build failures, or unexpected behavior in future so i decided to upgrade the listed dependencies to match the expected versions.
+
+#### 2 - After successfully running the app, I explored the available screens. While switching to the Task tab i got the following warning in the terminal,
+
+```
+VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.
+```
+
+This warning happened because the app was using nested scrollable views, outer scrollable view coming from ParallaxScrollView and the inner scrollable view was FlatList, which is itself virtualized scroll container. To fix the issue i have refactored the code, FlatList as the only scrollable container and moved ParallaxScrollView (with the TextInput) into FlatList by using its ListHeaderComponent.

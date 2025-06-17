@@ -1,7 +1,7 @@
-import { StyleSheet, FlatList, Text, TextInput, View} from 'react-native';
-import React, { useEffect, useState } from 'react';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import { StyleSheet, FlatList, Text, TextInput, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 
 export default function TabTwoScreen() {
   const [users, setUsers] = useState([]);
@@ -23,45 +23,48 @@ export default function TabTwoScreen() {
         );
         setFilteredUsers(filtered);
       });
-  }, [query]); 
+  }, [query]);
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="brain.head.profile.fill"
-          style={styles.headerImage}
-        />
-      }>
-       <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          value={query}
-          onChangeText={setQuery}
-          placeholder="Search users..."
-        />
-        </View>
-        <FlatList
-          data={filteredUsers}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => <Text style={styles.user}>{item.name}</Text>}
-        />
-    </ParallaxScrollView>
+    <FlatList
+      ListHeaderComponent={
+        <ParallaxScrollView
+          headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
+          headerImage={
+            <IconSymbol
+              size={310}
+              color="#808080"
+              name="brain.head.profile.fill"
+              style={styles.headerImage}
+            />
+          }
+        >
+          <View style={styles.container}>
+            <TextInput
+              style={styles.input}
+              value={query}
+              onChangeText={setQuery}
+              placeholder="Search users..."
+            />
+          </View>
+        </ParallaxScrollView>
+      }
+      data={filteredUsers}
+      keyExtractor={(item, index) => index.toString()}
+      renderItem={({ item }) => <Text style={styles.user}>{item.name}</Text>}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   headerImage: {
-    color: '#808080',
+    color: "#808080",
     bottom: -90,
     left: -35,
-    position: 'absolute',
+    position: "absolute",
   },
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 8,
   },
 });
