@@ -50,3 +50,7 @@ VirtualizedLists should never be nested inside plain ScrollViews with the same o
 ```
 
 This warning happened because the app was using nested scrollable views, outer scrollable view coming from ParallaxScrollView and the inner scrollable view was FlatList, which is itself virtualized scroll container. To fix the issue i have refactored the code, FlatList as the only scrollable container and moved ParallaxScrollView (with the TextInput) into FlatList by using its ListHeaderComponent.
+
+#### 3 - While reviewing the layout structure, I noticed that the app did not use SafeAreaView,
+
+which is important for avoiding UI overlap with device-specific areas like the notch, status bar, and home indicator, especially on iOS devices. Without it, certain elements were visually too close to or clipped by the system UI. To improve layout safety and consistency across devices, I wrapped the ParallaxScrollView content with SafeAreaView from react-native-safe-area-context. This ensures that all screens respect platform-specific safe areas, resulting in a better and more polished user experience.
