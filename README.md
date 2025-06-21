@@ -54,3 +54,57 @@ This warning happened because the app was using nested scrollable views, outer s
 #### 3 - While reviewing the layout structure, I noticed that the app did not use SafeAreaView,
 
 which is important for avoiding UI overlap with device-specific areas like the notch, status bar, and home indicator, especially on iOS devices. Without it, certain elements were visually too close to or clipped by the system UI. To improve layout safety and consistency across devices, I wrapped the ParallaxScrollView content with SafeAreaView from react-native-safe-area-context. This ensures that all screens respect platform-specific safe areas, resulting in a better and more polished user experience.
+
+#### 4 - I was wrong about #2, and I realized the UI was not working as expected; especially the ParallaxScrollView in the Task screen.
+
+So I created a separate component for FlatList called ParallaxFlatList, and moved the SearchBar and animated header into the ListHeaderComponent. This allowed the parallax effect to work correctly while still keeping FlatList as the main scrollable container, resolving the original warning without breaking the UI.
+
+#### 5 - I have added local filtering logic for the user search functionality.
+
+Since the current data set retrieved from the API is relatively small, I decided to perform the filtering on the client side using JavaScript’s native array filter method. However, if the expected outcome is a large data set (such as thousands of users), this approach will not be scalable or performant. In that case, the filtering logic should be moved to the backend, and the app should query the API with search parameters (e.g., /users?search=Pasan). This change would improve performance and reduce memory usage by only fetching relevant results directly from the server.
+
+#### 6 - Improved performance and UI structure with modular reusable components
+
+To keep the codebase clean and maintainable, I split the logic and UI into smaller, focused components. For example:
+
+- UserCard – displays user info in list view
+- DetailsCard – shows user details in modal view
+- DialogModal – generic modal wrapper for reuse
+- ParallaxFlatList – scrollable list with animated header
+- SearchBar – input with icons and clear functionality
+
+This structure improves readability, encourages reuse, and helps isolate logic for testing and scaling.
+
+#### 7 - Added loading, error, and refresh states to improve UX
+
+I added proper user feedback during network interactions:
+
+- Loading: A loading spinner and message are displayed while fetching users.
+- Error: If the fetch fails, a message with a retry button is shown.
+- Pull to refresh: FlatList now supports pull-to-refresh via onRefresh and refreshing props.
+
+These states improve the overall experience and help users understand what’s happening.
+
+#### 8 - Optimized component performance using useCallback and useMemo
+
+To reduce unnecessary re-renders and improve runtime performance, I memoized functions like openDialog, closeDialog, loadUsers, and onRefresh using useCallback.The filtered list of users is memoized with useMemo.Static components like SearchBar and IconSymbol were optimized by avoiding prop changes unless necessary. This keeps the UI responsive even with larger datasets.
+
+#### 9 - Improved type safety with TypeScript
+
+Throughout the app, I improved type usage by:
+
+- Defining clear and consistent types (User, UserCardProps, etc.)
+- Using generics with components like ParallaxFlatList<T>
+- Adding fallback checks (e.g., if (!user) return null)
+
+These changes help prevent runtime errors and make the code easier to work with in teams or at scale.
+
+#### 10 - Consistent UI spacing and theme usage
+
+I refined the layout styling to:
+
+- Respect spacing and padding across platforms
+- Use consistent colors, font sizes, and alignments
+- Apply SafeAreaView, margins, and gap where appropriate
+
+The result is a cleaner, platform-consistent look that feels more polished and reliable across different screen sizes.
